@@ -7,12 +7,14 @@ String FIREBASE_AUTH = SECRET_FIREBASE_AUTH;
 String WIFI_SSID = SECRET_WIFI_SSID;
 String WIFI_PASSWORD = SECRET_WIFI_PASSWORD;
 
+String queueEndpoint = "/queue";
+String historyEndpoint = "/history";
+
 const int ledPin = LED_BUILTIN;
-String path = "/queue";
 
 QueryFilter query;
-FirebaseData firebaseData;
-FirebaseData firebaseData2;
+FirebaseData firebaseQueue;
+FirebaseData firebaseHistory;
 
 void setup() {
   Serial.begin(9600);
@@ -51,20 +53,20 @@ void setupFirebase(){
   
   clearQueue();
   
-  Firebase.setStreamCallback(firebaseData, streamCallback, streamTimeoutCallback);
-  if (!Firebase.beginStream(firebaseData, path)) {
+  Firebase.setStreamCallback(firebaseQueue, streamCallback, streamTimeoutCallback);
+  if (!Firebase.beginStream(firebaseQueue, queueEndpoint)) {
       Serial.println("Could not begin stream");
-      Serial.println("REASON: " + firebaseData.errorReason());
+      Serial.println("REASON: " + firebaseQueue.errorReason());
       Serial.println();
   } else {
-    Serial.println("Connected to firebase stream: " + path);
+    Serial.println("Connected to firebase stream: " + queueEndpoint);
   }
 }
 
 void clearQueue() {
   FirebaseJson json;
   json.set("val", "clear");
-  Firebase.updateNode(firebaseData, path, json);
+  Firebase.updateNode(firebaseQueue, queueEndpoint, json);
 }
 void blinkLed() {
   Serial.println("Toogle led");
@@ -80,20 +82,19 @@ void streamCallback(StreamData data) {
   Serial.println("Stream dataType: " + data.dataType());
 
   if(data.dataPath() != "/" && data.dataType() == "json") {
-//    Firebase.pushJSON(firebaseData2, "/log", data.jsonObject());
-    blinkLed();  
+    blinkLed();
     saveLog(data.jsonObject());
-    Firebase.deleteNode(firebaseData, path + data.dataPath());
+    Firebase.deleteNode(firebaseQueue, queueEndpoint + data.dataPath());
   }
 }
 
 void saveLog(FirebaseJson& json) {
-  if (Firebase.pushJSON(firebaseData2, "/log", json)) {
-    Serial.println(firebaseData2.dataPath());
-    Serial.println(firebaseData2.pushName());
-    Serial.println(firebaseData2.dataPath() + "/"+ firebaseData.pushName());
+  if (Firebase.pushJSON(firebaseHistory, historyEndpoint, json)) {
+    Serial.println(firebaseHistory.dataPath());
+    Serial.println(firebaseHistory.pushName());
+    Serial.println(firebaseHistory.dataPath() + "/"+ firebaseQueue.pushName());
   } else {
-    Serial.println(firebaseData2.errorReason());
+    Serial.println(firebaseHistory.errorReason());
   }
 }
 
