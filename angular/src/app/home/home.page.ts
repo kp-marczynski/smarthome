@@ -14,7 +14,7 @@ export class HomePage {
     public queue: AngularFireList<any>;
 
     constructor(
-        private auth: AuthService,
+        public auth: AuthService,
         private firebaseAuth: FirebaseAuthService,
         private httpClient: HttpClient,
         private angularFireDatabase: AngularFireDatabase
