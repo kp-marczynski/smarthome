@@ -14,6 +14,7 @@
   </ion-header>
   <ion-button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</ion-button>
   <ion-button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</ion-button>
+  <ion-button (click)="auth.getIdToken()">Id token</ion-button>
   <pre *ngIf="auth.userProfile$ | async as profile">
     <code>{{ profile | json }}</code>
   </pre>

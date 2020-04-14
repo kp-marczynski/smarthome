@@ -10,6 +10,7 @@ import { environment } from './../../environments/environment';
   providedIn: 'root'
 })
 export class AuthService {
+
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
       createAuth0Client({
@@ -83,6 +84,17 @@ export class AuthService {
         appState: { target: redirectPath }
       });
     });
+  }
+
+  getIdToken(): Promise<any> {
+    return new Promise<any>(((resolve, reject) => {
+      this.auth0Client$.subscribe((client: Auth0Client) => {
+        client.getIdTokenClaims().then(idToken => {
+          console.log(idToken);
+          resolve(idToken.__raw);
+        });
+      });
+    }));
   }
 
   private handleAuthCallback() {
