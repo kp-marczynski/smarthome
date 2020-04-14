@@ -13,6 +13,7 @@ import {environment} from '../environments/environment';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import {HttpClientModule} from '@angular/common/http';
+import {AngularFireDatabaseModule} from '@angular/fire/database';
 
 @NgModule({
     declarations: [AppComponent],
@@ -23,6 +24,7 @@ import {HttpClientModule} from '@angular/common/http';
         AppRoutingModule,
         AngularFireAuthModule,
         AngularFireModule.initializeApp(environment.firebaseConfig),
+        AngularFireDatabaseModule,
         HttpClientModule,
         ServiceWorkerModule.register('ngsw-worker.js', {enabled: environment.production})
     ],

@@ -14,10 +14,14 @@
   </ion-header>
   <ion-button (click)="auth.login()" *ngIf="!auth.loggedIn">Log In</ion-button>
   <ion-button (click)="auth.logout()" *ngIf="auth.loggedIn">Log Out</ion-button>
-  <ion-button (click)="auth.getIdToken()">Id token</ion-button>
-  <pre *ngIf="auth.userProfile$ | async as profile">
-    <code>{{ profile | json }}</code>
-  </pre>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Garage</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="block" (click)="toggleGarage()">Click</ion-button>
+    </ion-card-content>
+  </ion-card>
   <div id="container">
     <strong>Ready to create an app?</strong>
     <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>

@@ -12,7 +12,6 @@ String historyEndpoint = "/history";
 
 const int ledPin = LED_BUILTIN;
 
-QueryFilter query;
 FirebaseData firebaseQueue;
 FirebaseData firebaseHistory;
 

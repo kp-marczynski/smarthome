@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {FirebaseAuthService} from '../services/firebase-auth.service';
 import {HttpClient} from '@angular/common/http';
+import {AngularFireDatabase, AngularFireList} from '@angular/fire/database';
 
 @Component({
     selector: 'app-home',
@@ -10,7 +11,14 @@ import {HttpClient} from '@angular/common/http';
 })
 export class HomePage {
 
-    constructor(private auth: AuthService, private firebaseAuth: FirebaseAuthService, private httpClient: HttpClient) {
+    public queue: AngularFireList<any>;
+
+    constructor(
+        private auth: AuthService,
+        private firebaseAuth: FirebaseAuthService,
+        private httpClient: HttpClient,
+        private angularFireDatabase: AngularFireDatabase
+    ) {
         this.auth.userProfile$.subscribe(res => {
             if (res) {
                 console.log(res);
@@ -25,6 +33,15 @@ export class HomePage {
 
             }
         });
+        this.queue = this.angularFireDatabase.list('/queue');
     }
 
+    toggleGarage() {
+        console.log(this.firebaseAuth.user);
+        this.queue.push({
+            user: this.firebaseAuth.user.uid,
+            device: 'garage',
+            timestamp: Date.now()
+        });
+    }
 }
