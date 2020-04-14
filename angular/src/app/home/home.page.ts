@@ -15,8 +15,12 @@ export class HomePage {
             if (res) {
                 console.log(res);
                 this.auth.getIdToken().then(idToken => {
-                    httpClient.post('https://us-central1-kpmarczynski-smarthome.cloudfunctions.net/getToken', idToken).subscribe(funResult => console.log(funResult))
-                    // this.firebaseAuth.signInWithCustomToken(idToken).then(res2 => console.log(res2));
+                    console.log(idToken);
+                    httpClient.post('https://us-central1-kpmarczynski-smarthome.cloudfunctions.net/firebaseCustomToken', idToken)
+                        .subscribe((firebaseCustomToken: any) => {
+                            console.log(firebaseCustomToken);
+                            this.firebaseAuth.signInWithCustomToken(firebaseCustomToken.firebaseToken).then(res2 => console.log(res2));
+                        });
                 });
 
             }
