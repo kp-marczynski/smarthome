@@ -98,7 +98,7 @@ void saveLog(FirebaseJson& json) {
 }
 
 void streamTimeoutCallback(bool timeout) {
-//  if(timeout){
-//    Serial.println("Stream timeout, resume streaming...");
-//  }  
+  if(timeout){
+    Serial.println("Stream timeout, resume streaming...");
+  }  
 }
